@@ -1,4 +1,4 @@
-# restaurant-recommendation-system
+# restaurant recommendation system
 
 This project is my Capstone project for the DSI 2020 training. The aim of the project is to create a restaurant recommender system that will be able to give suggestions of restaurants to users based on the restaurants reviews and previous restaurant the user has been to. 
 
