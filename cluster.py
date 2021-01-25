@@ -4,22 +4,14 @@ import sklearn
 from sklearn.cluster import KMeans
 
 
-business_URL= "/home/cate/Cate/recommender_system/business_final.csv"
-def load_data(url):
-    data = pd.read_csv(url)
-    return data
-
-def clean(data):
-    data.drop(['Unnamed: 0'], axis=1, inplace = True)
-    data['business_id'] = data['business_id ']
-    data = data[['business_id', 'name', 'categories','stars','review_count','latitude','longitude','postal_code']]
-    return data
-
+# business_URL= "/home/cate/Cate/recommender_system/business_final.csv"
+# def load_data(url):
+#     data = pd.read_csv(url)
+#     return data
 
 
 # Creating Location-Based Recommendation Function
-def location_based_recommendation(url, latitude, longitude):
-    data = load_data(business_URL)
+def location_based_recommendation(data, latitude, longitude):
 
     # Putting the Coordinates of Restaurants together into a dataframe
     coordinates = data[['longitude','latitude']]

@@ -3,35 +3,24 @@ import pandas as pd
 import sklearn
 import streamlit as st
 
+from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
+
 #path to data
-business_URL= "/home/cate/Cate/recommender_system/business_final.csv"
-reviews_URL = "/home/cate/Cate/recommender_system/final_reviews.csv"
+toronto_URL= "/home/cate/Cate/restaurant-recommendation-system/data/new_toronto_data.csv"
 
 #function to load in the data
-@st.cache(persist=True)
+@st.cache(persist=True, allow_output_mutation=True)
 def load_data(url):
     data = pd.read_csv(url)
     return data
 
-final_reviews = load_data(reviews_URL)
-final_reviews = final_reviews.drop('Unnamed: 0', axis = 1)
-business_final = load_data(business_URL)
-#add score to dataframe
-reviews_df = SC.score(final_reviews)
-
-business_final = business_final.rename(columns = {"business_id ":"business_id"}) 
-
-final_df = reviews_df[['business_id', 'user_id', 'super_score', 'Keywords']]
-toronto_restaurant =  business_final[['business_id', 'name', 'categories']]
-
-# Merging Dataframes
-toronto_data = pd.merge(final_df, toronto_restaurant, on='business_id')
+toronto_data = load_data(toronto_URL)
 
 # Combining the text in Keywords and categories columns
-toronto_data['All_Keywords'] = toronto_data['categories'].str.cat(toronto_data['Keywords'],sep=", ")
+#toronto_data['All_Keywords'] = toronto_data['categories'].str.cat(toronto_data['Keywords'],sep=", ")
 
 # Formating the All_Keywords Column
-
 toronto_data['All_Keywords'] = toronto_data['All_Keywords'].map(lambda x: str(x))
 toronto_data['All_Keywords'] = toronto_data['All_Keywords'].map(lambda x: x.lower())
 
@@ -73,7 +62,7 @@ indices = pd.Series(toronto_final.index)
 # generating the cosine similarity matrix
 cosine_sim = cosine_similarity(count_matrix, count_matrix)
 
-# function that takes in movie title as input and returns the top 10 recommended movies
+# function that takes in restaurant name as input and returns the top 10 recommended restaurants
 def content_based_recommendations(name, cosine_sim = cosine_sim):
     
     recommended_restaurants = []
